@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Statistics {
     public static List<Double> computeMeans(List<FeatureVector> samples){
-        int size = samples.getFirst().dwellTimes().size() + samples.getFirst().flightTimes().size();
+        int size = samples.getFirst().size();
         List<Double> result = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {result.add(0.0);}
 
@@ -54,4 +54,16 @@ public class Statistics {
         return result;
     }
 
+    public static double computeScore(List<Double> means, List<Double> stds, FeatureVector inputFV) {
+        double eps = 1e-6;
+        List<Double> values = inputFV.allFeatures();
+
+        double sum = 0;
+        for (int i = 0; i < values.size(); i++) {
+            double z = Math.abs(values.get(i) - means.get(i))
+                    / (stds.get(i) + eps);
+            sum += z;
+        }
+        return sum / values.size();
+    }
 }
