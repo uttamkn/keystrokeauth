@@ -2,6 +2,8 @@ package app;
 
 import models.FeatureVector;
 import models.KeyStroke;
+import models.UserProfile;
+import service.EnrollmentService;
 import service.FeatureExtractionService;
 import service.KeystrokeCaptureService;
 
@@ -11,6 +13,7 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static double THRESHOLD = 0.5;
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -52,9 +55,10 @@ public class Main {
         System.out.println("\n=== Enrollment Complete ===");
         System.out.println("Collected " + featureVectors.size() + " featureVectors.");
 
+        UserProfile userProfile = EnrollmentService.enroll(featureVectors, THRESHOLD);
+
         // TODO:
-        // 2. Build UserProfile from FeatureVectors
-        // 3. Save UserProfile in memory
         // 4. Add verification step
+        // improvement: reject wrong inputs in profiling stage and ask for a retry
     }
 }
