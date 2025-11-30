@@ -1,6 +1,8 @@
 package app;
 
+import models.FeatureVector;
 import models.KeyStroke;
+import service.FeatureExtractionService;
 import service.KeystrokeCaptureService;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class Main {
             return;
         }
 
-        System.out.print("How many samples for enrollment? ");
+        System.out.print("How many featureVectors for enrollment? ");
         int n = scanner.nextInt();
         scanner.nextLine();
 
@@ -32,7 +34,7 @@ public class Main {
             return;
         }
 
-        List<List<KeyStroke>> samples = new ArrayList<>();
+        List<FeatureVector> featureVectors = new ArrayList<>();
 
         for (int i = 1; i <= n; i++) {
             System.out.println("\nSample " + i + " of " + n);
@@ -42,17 +44,15 @@ public class Main {
                     password.length(),
                     "Type your password (" + i + "/" + n + ")"
             );
-
-            samples.add(ks);
-
             System.out.println("Captured keystrokes: " + ks.size());
+
+            featureVectors.add(FeatureExtractionService.extract(ks));
         }
 
         System.out.println("\n=== Enrollment Complete ===");
-        System.out.println("Collected " + samples.size() + " samples.");
+        System.out.println("Collected " + featureVectors.size() + " featureVectors.");
 
         // TODO:
-        // 1. Convert Keystrokes to FeatureVectors
         // 2. Build UserProfile from FeatureVectors
         // 3. Save UserProfile in memory
         // 4. Add verification step
